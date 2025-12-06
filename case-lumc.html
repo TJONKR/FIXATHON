@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LUMC — Fixathon x Norsken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span>&lt;</span> Fixathon <span>&gt;</span></a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav" id="nav">
+            <a href="case-hulpwijzer.html">Hulpwijzer</a>
+            <a href="case-lumc.html" class="active">LUMC</a>
+            <a href="case-funding.html">Funding</a>
+            <a href="case-food-waste.html">Food Waste</a>
+        </nav>
+    </header>
+
+    <main class="case-page">
+        <a href="index.html" class="back-link"><span>←</span> All cases</a>
+        
+        <div class="case-header">
+            <div class="case-number">Case 02</div>
+            <h1 class="case-partner">LUMC</h1>
+            <div class="case-collab">Department of Clinical Epidemiology</div>
+        </div>
+
+        <div class="case-content">
+            <h2>The Problem</h2>
+            <div class="case-section">
+                <p class="problem-text">Researchers are buried in admin. The actual science gets squeezed into whatever time is left.</p>
+                <p>The Department of Clinical Epidemiology at Leiden University Medical Center exists to answer clinically relevant questions. 75 people — professors, post-docs, PhD candidates — working to improve healthcare through research.</p>
+                <p>But research has a bureaucracy problem. Before you can study anything, you're cleaning data, reviewing literature, writing protocols, coordinating teams, hunting for that presentation someone gave two years ago. Poor data quality compromises entire studies. Systematic reviews take months. Knowledge gets lost in messy folders.</p>
+                <p>This isn't unique to LUMC. Every research institution faces it. The ones who solve it will move faster, publish more, and ultimately save more lives.</p>
+            </div>
+
+            <h2>The Challenge</h2>
+            <div class="case-section">
+                <p>Free researchers from administrative gravity. Build AI-powered tools that give them their time back — so they can focus on the work that matters.</p>
+                
+                <div class="angles">
+                    <div class="angle">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Data management</strong> — automate cleaning, validation, and quality checks that currently eat weeks</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>Literature synthesis</strong> — accelerate systematic reviews and evidence gathering</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>Knowledge retrieval</strong> — make years of institutional knowledge findable and usable</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">04</span>
+                        <span class="angle-text"><strong>Workflow automation</strong> — reduce coordination overhead so teams can focus on research</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Constraints</h2>
+            <div class="case-section">
+                <div class="constraints">
+                    <div class="constraint"><strong>No patient data.</strong> Privacy first, always. Work with synthetic or anonymized data only.</div>
+                    <div class="constraint"><strong>Local deployment.</strong> Solutions must run on-premise. No cloud dependencies for sensitive workflows.</div>
+                    <div class="constraint"><strong>Python preferred.</strong> The department works in Python. Integration matters.</div>
+                </div>
+            </div>
+
+            <h2>Potential Use Cases</h2>
+            <div class="case-section">
+                <div class="use-cases">
+                    <div class="use-case">
+                        <div class="use-case-title">The Knowledge Center</div>
+                        <div class="use-case-desc">Turn years of buried presentations and research into a searchable, structured archive with AI-powered summaries</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Meetings → Actions</div>
+                        <div class="use-case-desc">Real-time transcription that extracts action items, generates minutes, and sends tasks automatically</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">The Protocol Assistant</div>
+                        <div class="use-case-desc">AI co-pilot that turns spoken research discussions into structured protocol documents in real-time</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">The Meeting Orchestrator</div>
+                        <div class="use-case-desc">Self-service scheduling with auto-reminders and gap-filling when speakers cancel</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="case-nav">
+            <a href="case-hulpwijzer.html" class="case-nav-link prev">
+                <span class="case-nav-label">Previous case</span>
+                <span class="case-nav-title">← Hulpwijzer</span>
+            </a>
+            <a href="case-funding.html" class="case-nav-link next">
+                <span class="case-nav-label">Next case</span>
+                <span class="case-nav-title">Funding →</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">Fixathon — In partnership with Norsken</div>
+        <div class="footer-logo">&lt; Fixathon &gt;</div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+

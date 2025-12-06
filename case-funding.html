@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Funding Access — Fixathon x Norsken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span>&lt;</span> Fixathon <span>&gt;</span></a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav" id="nav">
+            <a href="case-hulpwijzer.html">Hulpwijzer</a>
+            <a href="case-lumc.html">LUMC</a>
+            <a href="case-funding.html" class="active">Funding</a>
+            <a href="case-food-waste.html">Food Waste</a>
+        </nav>
+    </header>
+
+    <main class="case-page">
+        <a href="index.html" class="back-link"><span>←</span> All cases</a>
+        
+        <div class="case-header">
+            <div class="case-number">Case 03</div>
+            <h1 class="case-partner">Funding Access</h1>
+            <div class="case-collab">Norsken — Funding Access for Founders</div>
+        </div>
+
+        <div class="case-content">
+            <h2>The Problem</h2>
+            <div class="case-section">
+                <p class="problem-text">There's money everywhere for early-stage entrepreneurs — grants, subsidies, EU programs, innovation vouchers. Billions sitting in pots. Almost nobody gets it.</p>
+                <p>Not because they don't qualify. Because finding it is a full-time job. The EU alone has hundreds of funding programs, each with different eligibility criteria, application windows, and reporting requirements.</p>
+                <p>For entrepreneurs: you're entitled to support that could change your trajectory, but discovering it requires expertise you don't have. For funding bodies: you're buried in administration while founders who need help never apply. For the economy: capital sits idle, talent goes unfunded. Pure waste.</p>
+            </div>
+
+            <h2>The Challenge</h2>
+            <div class="case-section">
+                <p>Build a solution that gets funding to the founders who need it — faster, with less friction, for everyone involved.</p>
+                
+                <div class="angles">
+                    <div class="angle">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>The founder side</strong> — help entrepreneurs discover what they're eligible for, match them to programs, reduce application pain</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>The agency side</strong> — help funding bodies process and distribute more efficiently</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>The system side</strong> — reimagine how eligibility, matching, or distribution could work if designed today</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Constraints</h2>
+            <div class="case-section">
+                <div class="constraints">
+                    <div class="constraint"><strong>Real-world messiness.</strong> Funding programs are fragmented, poorly documented, constantly changing. Work with imperfect information.</div>
+                    <div class="constraint"><strong>Trust matters.</strong> Founders have been burned by consultants who overpromise. Agencies are cautious about automation.</div>
+                    <div class="constraint"><strong>Scope to one slice.</strong> Pick one user, one problem, one interaction — and make it work.</div>
+                </div>
+            </div>
+
+            <h2>Potential Use Cases</h2>
+            <div class="case-section">
+                <div class="use-cases">
+                    <div class="use-case">
+                        <div class="use-case-title">Grant Matcher</div>
+                        <div class="use-case-desc">Answer 10 questions about your startup, get a ranked list of every grant and subsidy you qualify for</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Application Generator</div>
+                        <div class="use-case-desc">AI drafts your grant application based on your pitch deck and the program's requirements</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Deadline Radar</div>
+                        <div class="use-case-desc">Track application windows across programs and get alerts before they close</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Agency Inbox Cleaner</div>
+                        <div class="use-case-desc">Help funding bodies triage and pre-qualify applications automatically</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="case-nav">
+            <a href="case-lumc.html" class="case-nav-link prev">
+                <span class="case-nav-label">Previous case</span>
+                <span class="case-nav-title">← LUMC</span>
+            </a>
+            <a href="case-food-waste.html" class="case-nav-link next">
+                <span class="case-nav-label">Next case</span>
+                <span class="case-nav-title">Food Waste →</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">Fixathon — In partnership with Norsken</div>
+        <div class="footer-logo">&lt; Fixathon &gt;</div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
