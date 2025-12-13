@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hulpwijzer — Fixathon x Norrsken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span>&lt;</span> Fixathon <span>&gt;</span></a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav" id="nav">
+            <a href="case-hulpwijzer.html" class="active">Hulpwijzer</a>
+            <a href="case-lumc.html">LUMC</a>
+            <a href="case-workright.html">WorkRight</a>
+        </nav>
+    </header>
+
+    <main class="case-page">
+        <a href="index.html" class="back-link"><span>←</span> All cases</a>
+        
+        <div class="case-header">
+            <div class="case-number">Case 01</div>
+            <h1 class="case-partner">Hulpwijzer</h1>
+            <div class="case-collab">in collaboration with Single Super Mom</div>
+        </div>
+
+        <div class="case-content">
+            <h2>The Problem</h2>
+            <div class="case-section">
+                <p class="problem-text">Thousands of single mothers are missing out on financial support they're entitled to — not because it doesn't exist, but because finding it is nearly impossible.</p>
+                <p>Financial aid is scattered across hundreds of municipalities, funds, and schemes. Each has its own rules, forms, and eligibility criteria. For someone already stretched thin — working, raising kids, surviving — navigating this maze isn't just hard. It's designed to fail them.</p>
+                <p>The Toeslagenaffaire made it worse. Trust in government systems is broken. Many who need help the most now avoid the system entirely.</p>
+            </div>
+
+            <h2>The Challenge</h2>
+            <div class="case-section">
+                <p>Build an AI-powered solution that helps single mothers discover and access the financial support they're entitled to.</p>
+                
+                <div class="angles">
+                    <div class="angle">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Aggregation</strong> — bring fragmented information from multiple sources into one place</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>Accessibility</strong> — make the interface human and approachable for people who distrust bureaucratic systems</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>Automation with oversight</strong> — relieve municipalities from paper-heavy workflows while keeping humans in the loop</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Constraints</h2>
+            <div class="case-section">
+                <div class="constraints">
+                    <div class="constraint"><strong>Human-in-the-loop is mandatory.</strong> Full automation without oversight is not acceptable. Design for verification, not replacement.</div>
+                    <div class="constraint"><strong>Trust is fragile.</strong> Your UX choices matter. Assume your user has been burned by "the system" before.</div>
+                    <div class="constraint"><strong>Scope realistically.</strong> A working prototype that solves one piece well beats a grand vision that doesn't run.</div>
+                </div>
+            </div>
+
+            <h2>Potential Use Cases</h2>
+            <div class="case-section">
+                <div class="use-cases">
+                    <div class="use-case">
+                        <div class="use-case-title">Eligibility Scanner</div>
+                        <div class="use-case-desc">Upload your situation once, get matched to all schemes you qualify for across municipalities</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Application Assistant</div>
+                        <div class="use-case-desc">AI-guided form filling that pre-populates fields and explains requirements in plain language</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Deadline Tracker</div>
+                        <div class="use-case-desc">Never miss a renewal or application window — proactive alerts for all your active benefits</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Municipality Dashboard</div>
+                        <div class="use-case-desc">Help case workers see the full picture of a family's situation across fragmented systems</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="case-nav">
+            <div></div>
+            <a href="case-lumc.html" class="case-nav-link next">
+                <span class="case-nav-label">Next case</span>
+                <span class="case-nav-title">LUMC →</span>
+            </a>
+        </nav>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">Fixathon — In partnership with Norrsken</div>
+        <div class="footer-logo">&lt; Fixathon &gt;</div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+
+
+

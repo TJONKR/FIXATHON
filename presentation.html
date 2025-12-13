@@ -1,0 +1,1759 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fixathon Amsterdam</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #000000;
+            --text: #ffffff;
+            --text-muted: #b8b8b8;
+            --border: #333333;
+            --accent: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 24px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+        }
+
+        .nav-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 700;
+            letter-spacing: -0.02em;
+        }
+
+        .nav-logo span {
+            opacity: 0.4;
+        }
+
+        .nav-controls {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .slide-counter {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+        }
+
+        .nav-btn {
+            background: rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
+            color: var(--text);
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .nav-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Slides Container */
+        .slides-container {
+            width: 100%;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+
+        .slide.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        /* Grid Background */
+        .grid-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+        }
+
+        /* Slide Content */
+        .slide-content {
+            position: relative;
+            z-index: 1;
+            padding: 120px 80px 80px;
+            max-width: 1400px;
+            width: 100%;
+        }
+
+        .slide-content.center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            margin: 0 auto;
+        }
+
+        /* Badge */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            margin-bottom: 32px;
+        }
+
+        .badge .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+        }
+
+        .badge.cue-badge {
+            color: #ff6b6b;
+        }
+
+        .badge.cue-badge .dot {
+            background: #ff6b6b;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+
+        /* Typography */
+        .hero-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 5.5rem);
+            font-weight: 700;
+            line-height: 1.05;
+            letter-spacing: -0.03em;
+            margin-bottom: 32px;
+        }
+
+        .slide-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            font-weight: 700;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 40px;
+        }
+
+        .highlight {
+            color: var(--text);
+            opacity: 0.5;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--text-muted);
+            max-width: 600px;
+        }
+
+        /* Scrolling Text */
+        .scrolling-text {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            overflow: hidden;
+            padding: 20px 0;
+            border-top: 1px solid var(--border);
+            background: var(--bg);
+        }
+
+        .scroll-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+            white-space: nowrap;
+        }
+
+        .scroll-track span {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            letter-spacing: 0.3em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            padding-right: 60px;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* Program Grid */
+        .program-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            margin-top: 40px;
+        }
+
+        .program-day h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .program-item {
+            display: flex;
+            gap: 24px;
+            padding: 12px 0;
+            font-size: 0.95rem;
+        }
+
+        .program-time {
+            font-family: 'Space Grotesk', sans-serif;
+            color: var(--text);
+            min-width: 60px;
+            font-weight: 500;
+        }
+
+        .program-desc {
+            color: var(--text-muted);
+        }
+
+        .program-desc.highlight-item {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Prizes Grid */
+        .prizes-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .prize-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            transition: all 0.2s;
+        }
+
+        .prize-card:hover {
+            border-color: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.04);
+        }
+
+        .prize-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 12px;
+        }
+
+        .prize-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        /* Partners Grid */
+        .partners-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            margin-top: 40px;
+        }
+
+        .partner-card {
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            text-align: center;
+        }
+
+        .partner-card .logo-placeholder {
+            padding: 24px;
+            border: 1px dashed var(--border);
+            border-radius: 8px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+        }
+
+        .partner-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            margin-bottom: 4px;
+        }
+
+        .partner-card p {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+        }
+
+        /* CUE Slide */
+        .cue-slide {
+            background: linear-gradient(135deg, rgba(255,107,107,0.05) 0%, rgba(0,0,0,1) 100%);
+        }
+
+        .cue-content {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            padding: 80px;
+        }
+
+        .cue-content .speaker-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 700;
+            letter-spacing: -0.03em;
+            margin-bottom: 16px;
+        }
+
+        .cue-content .speaker-role {
+            font-size: 1.5rem;
+            color: var(--text-muted);
+        }
+
+        /* Angles/Steps List */
+        .angles-list {
+            margin-top: 32px;
+        }
+
+        .angle-item {
+            display: flex;
+            gap: 24px;
+            padding: 20px 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .angle-item:last-child {
+            border-bottom: none;
+        }
+
+        .angle-num {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            min-width: 32px;
+        }
+
+        .angle-text {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .angle-text strong {
+            color: var(--text);
+            font-weight: 500;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px 48px;
+            font-family: 'Space Grotesk', monospace;
+            font-size: 2.5rem;
+            font-weight: 700;
+            text-align: center;
+            letter-spacing: 0.1em;
+            margin: 40px 0;
+        }
+
+        /* Steps */
+        .steps-list {
+            margin-top: 32px;
+        }
+
+        .step-item {
+            display: flex;
+            gap: 20px;
+            padding: 16px 0;
+            align-items: flex-start;
+        }
+
+        .step-num {
+            font-family: 'Space Grotesk', sans-serif;
+            background: rgba(255,255,255,0.1);
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.875rem;
+            font-weight: 500;
+            flex-shrink: 0;
+        }
+
+        .step-text {
+            font-size: 1rem;
+            color: var(--text-muted);
+            padding-top: 4px;
+        }
+
+        .step-text strong {
+            color: var(--text);
+        }
+
+        /* Team Rules */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+            margin-top: 48px;
+        }
+
+        .team-card {
+            text-align: center;
+            padding: 40px 32px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .team-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .team-card h4 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .team-card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+        }
+
+        /* Photo Placeholder */
+        .photo-placeholder {
+            background: rgba(255,255,255,0.02);
+            border: 1px dashed var(--border);
+            border-radius: 12px;
+            padding: 80px 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.875rem;
+        }
+
+        /* Two Column */
+        .two-col {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        /* Big Message */
+        .big-message {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            padding: 80px;
+        }
+
+        .big-message .hero-title {
+            margin-bottom: 24px;
+        }
+
+        /* Origin Story */
+        .origin-boxes {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 500px;
+        }
+
+        .origin-box {
+            padding: 24px 32px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+        }
+
+        .origin-box .year {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .origin-box .title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 500;
+        }
+
+        .origin-box p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        .origin-arrow {
+            text-align: center;
+            font-size: 1.5rem;
+            color: var(--border);
+        }
+
+        /* City Tags */
+        .city-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 32px;
+            justify-content: center;
+        }
+
+        .city-tag {
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        .city-tag.coming {
+            opacity: 0.5;
+            border-style: dashed;
+        }
+
+        /* Mission Tags */
+        .mission-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 40px;
+            justify-content: center;
+            max-width: 800px;
+        }
+
+        .mission-tag {
+            padding: 12px 20px;
+            background: rgba(255,107,107,0.1);
+            border: 1px solid rgba(255,107,107,0.2);
+            border-radius: 24px;
+            font-size: 0.85rem;
+            color: #ff8a8a;
+        }
+
+        /* QR Placeholder */
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin: 32px auto;
+        }
+
+        /* Keyboard Hint */
+        .keyboard-hint {
+            position: fixed;
+            bottom: 24px;
+            right: 40px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+            z-index: 100;
+        }
+
+        /* Note for speaker */
+        .speaker-note {
+            position: fixed;
+            bottom: 24px;
+            left: 40px;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            opacity: 0.5;
+            z-index: 100;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                rgba(0, 0, 0, 0.5) 0%,
+                rgba(0, 0, 0, 0.75) 50%,
+                rgba(0, 0, 0, 0.98) 100%
+            );
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .slide-content {
+                padding: 100px 40px 60px;
+            }
+            
+            .program-grid,
+            .prizes-grid,
+            .partners-grid,
+            .team-grid,
+            .two-col {
+                grid-template-columns: 1fr;
+                gap: 24px;
+            }
+
+            .hero-title {
+                font-size: 3rem;
+            }
+
+            .slide-title {
+                font-size: 2.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="nav">
+        <div class="nav-logo"><span>&lt;</span> Fixathon <span>&gt;</span></div>
+        <div class="nav-controls">
+            <span class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">32</span></span>
+            <button class="nav-btn" id="prevBtn">←</button>
+            <button class="nav-btn" id="nextBtn">→</button>
+        </div>
+    </nav>
+
+    <!-- Slides Container -->
+    <div class="slides-container" id="slidesContainer">
+
+        <!-- ==================== -->
+        <!-- SLIDE 1: Title -->
+        <!-- ==================== -->
+        <section class="slide active" data-slide="1">
+            <div class="video-background">
+                <video autoplay muted loop playsinline>
+                    <source src="https://cdn.prod.website-files.com/65e76a14af207274f46c7f0e%2F66686cc7b07e8ad18a0ca349_UPDATED_BACKGROUND-transcode.mp4" type="video/mp4">
+                </video>
+                <div class="video-overlay"></div>
+            </div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    DECEMBER 13-14 • VANDEBRON, AMSTERDAM
+                    <span class="dot"></span>
+                </div>
+                <h1 class="hero-title">
+                    AI Fixathon<br>
+                    <span class="highlight">Amsterdam</span>
+                </h1>
+                <p class="subtitle">Build AI that matters. In 24 hours.</p>
+            </div>
+            <div class="scrolling-text">
+                <div class="scroll-track">
+                    <span>NORRSKEN × AI FOR IMPACT COLLECTIVE × AI BUILDERS — </span>
+                    <span>NORRSKEN × AI FOR IMPACT COLLECTIVE × AI BUILDERS — </span>
+                    <span>NORRSKEN × AI FOR IMPACT COLLECTIVE × AI BUILDERS — </span>
+                    <span>NORRSKEN × AI FOR IMPACT COLLECTIVE × AI BUILDERS — </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 2: What is this? -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="2">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    WHAT IS THIS?
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    24 hours to build AI<br>
+                    <span class="highlight">that makes real impact</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Part of the global Norrsken Fixathon</strong> — happening simultaneously in Stockholm, Barcelona, San Francisco, Berlin</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>3 real-world challenges</strong> linked to the UN Sustainable Development Goals</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>No slideware</strong> — working prototypes that solve real problems</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">04</span>
+                        <span class="angle-text"><strong>All code is open-source</strong> — your work lives on</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 3: Program -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="3">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    PROGRAM
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Two days of<br>
+                    <span class="highlight">building</span>
+                </h1>
+                <div class="program-grid">
+                    <div class="program-day">
+                        <h3>Saturday, Dec 13</h3>
+                        <div class="program-item">
+                            <span class="program-time">09:30</span>
+                            <span class="program-desc">Doors open</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">10:00</span>
+                            <span class="program-desc">Intro & Keynotes</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">11:00</span>
+                            <span class="program-desc">Challenge pitches + Team matching</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">12:00</span>
+                            <span class="program-desc highlight-item">🚀 Hacking begins!</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">13:30</span>
+                            <span class="program-desc">Lunch</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">18:00</span>
+                            <span class="program-desc">Continue at home or AI AM</span>
+                        </div>
+                    </div>
+                    <div class="program-day">
+                        <h3>Sunday, Dec 14</h3>
+                        <div class="program-item">
+                            <span class="program-time">09:00</span>
+                            <span class="program-desc">Location opens</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">13:00</span>
+                            <span class="program-desc highlight-item">⏰ Submission deadline + Lunch</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">14:00</span>
+                            <span class="program-desc">Demo presentations</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">16:00</span>
+                            <span class="program-desc highlight-item">🏆 Prizes!</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">16:15</span>
+                            <span class="program-desc">Drinks</span>
+                        </div>
+                        <div class="program-item">
+                            <span class="program-time">18:00</span>
+                            <span class="program-desc">Location closes</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 4: Prizes -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="4">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    WHAT YOU CAN WIN
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Prizes for<br>
+                    <span class="highlight">best projects</span>
+                </h1>
+                <div class="prizes-grid" style="grid-template-columns: repeat(2, 1fr); margin-top: 48px;">
+                    <div class="prize-card">
+                        <h4>🏆 €250 per Challenge Winner</h4>
+                        <p>Best solution for LUMC & Hulpwijzer<br><em style="font-size: 0.85em; opacity: 0.7;">* ActivePieces use required</em></p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>🌱 €500 GreenPT Bounty</h4>
+                        <p>Best use of sustainable AI</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>⭐ 6 Months Lovable Pro</h4>
+                        <p>For the overall best project</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>🚀 Further Development</h4>
+                        <p>Priority to join project team if partner picks your solution</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 5: Everyone Gets -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="5">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    EVERYONE GETS
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Your tools &<br>
+                    <span class="highlight">credits today</span>
+                </h1>
+                <div class="prizes-grid" style="grid-template-columns: repeat(4, 1fr); margin-top: 48px;">
+                    <div class="prize-card">
+                        <h4>🌱 €50 GreenPT Credits</h4>
+                        <p>Sustainable AI API credits to power your builds</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>🔧 ActivePieces Access</h4>
+                        <p>Low-code AI agent builder with extra credits</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>🚀 200 Lovable Credits</h4>
+                        <p>Pro access to build apps with AI</p>
+                    </div>
+                    <div class="prize-card">
+                        <h4>📶 WiFi Password</h4>
+                        <p style="font-family: 'Space Grotesk', monospace; font-size: 1.1rem; color: var(--text);"><strong>zonnecollectief</strong></p>
+                    </div>
+                </div>
+                <p style="margin-top: 48px; font-size: 1.1rem; color: var(--text-muted);">Our friends will explain how to use these tools effectively →</p>
+                <p style="margin-top: 16px; font-size: 1rem;">After their workshops, I'll show you how to get <strong>Lovable access</strong>.</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 6: Partners -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="6">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    MADE POSSIBLE BY
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Partners &<br>
+                    <span class="highlight">sponsors</span>
+                </h1>
+                <div class="partners-grid">
+                    <div class="partner-card">
+                        <img src="pictures for slides/LOGO Norrsken.svg" alt="Norrsken" style="height: 50px; filter: brightness(0) invert(1); margin-bottom: 16px;">
+                        <h4>Norrsken</h4>
+                        <p>Global Fixathon Network</p>
+                    </div>
+                    <div class="partner-card">
+                        <img src="pictures for slides/Logo AIFI.png" alt="AIFIC" style="height: 50px; filter: brightness(0) invert(1); margin-bottom: 16px;">
+                        <h4>AI for Impact Collective</h4>
+                        <p>Impact-driven AI</p>
+                    </div>
+                    <div class="partner-card">
+                        <img src="pictures for slides/LOGO AI Builders.png" alt="AI Builders" style="height: 50px; margin-bottom: 16px;">
+                        <h4>AI Builders</h4>
+                        <p>The Builder Community</p>
+                    </div>
+                    <div class="partner-card">
+                        <img src="pictures for slides/LOGO vandebron.png" alt="Vandebron" style="height: 50px; filter: brightness(0) invert(1); margin-bottom: 16px;">
+                        <h4>Vandebron</h4>
+                        <p>Venue + Food & Drinks</p>
+                    </div>
+                    <div class="partner-card">
+                        <img src="pictures for slides/GreenPT logo.webp" alt="GreenPT" style="height: 50px; filter: brightness(0) invert(1); margin-bottom: 16px;">
+                        <h4>GreenPT</h4>
+                        <p>Sustainable LLM Credits</p>
+                    </div>
+                    <div class="partner-card">
+                        <img src="pictures for slides/Logo Activepieces.svg" alt="ActivePieces" style="height: 50px; filter: brightness(0) invert(1); margin-bottom: 16px;">
+                        <h4>ActivePieces</h4>
+                        <p>Low-code AI + Prize Money</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 7: CUE - Thomas -->
+        <!-- ==================== -->
+        <section class="slide cue-slide" data-slide="6">
+            <div class="grid-bg"></div>
+            <div class="cue-content">
+                <div class="badge cue-badge">
+                    <span class="dot"></span>
+                    NEXT SPEAKER
+                    <span class="dot"></span>
+                </div>
+                <div class="speaker-name">Thomas</div>
+                <div class="speaker-role">Norrsken • 5 min</div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 8: AI Builders Title -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="7">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    WHO WE ARE
+                    <span class="dot"></span>
+                </div>
+                <img src="pictures for slides/LOGO AI Builders.png" alt="AI Builders" style="max-width: 200px; height: 80px; object-fit: contain; margin-bottom: 32px;">
+                <h1 class="hero-title">
+                    AI Builders
+                </h1>
+                <p class="subtitle">Building real AI optimism</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 9: AI Builders Origin -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="8">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE ORIGIN STORY
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    From hobby club<br>
+                    <span class="highlight">to AI cooperative</span>
+                </h1>
+                <div class="two-col">
+                    <div class="origin-boxes">
+                        <div class="origin-box">
+                            <div class="year">April 2023</div>
+                            <div class="title">"AI Hobby Club"</div>
+                            <p>A few LLM nerds getting together</p>
+                        </div>
+                        <div class="origin-arrow">↓</div>
+                        <div class="origin-box">
+                            <div class="year">Today</div>
+                            <div class="title">"AI Cooperative"</div>
+                            <p>Flat, co-owned, democratic</p>
+                        </div>
+                    </div>
+                    <div style="border-radius: 12px; overflow: hidden; height: 200px;">
+                        <img src="pictures for slides/AI Builders rooftop.webp" alt="AI Builders meetup" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 10: AI Builders Community -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="9">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE COMMUNITY
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Builders across<br>
+                    <span class="highlight">Europe</span>
+                </h1>
+                <div class="city-tags">
+                    <span class="city-tag">Amsterdam</span>
+                    <span class="city-tag">Berlin</span>
+                    <span class="city-tag">Rotterdam</span>
+                    <span class="city-tag">Lisbon</span>
+                    <span class="city-tag">London</span>
+                    <span class="city-tag">Utrecht</span>
+                    <span class="city-tag coming">Paris</span>
+                    <span class="city-tag coming">Vienna</span>
+                    <span class="city-tag coming">San Francisco</span>
+                </div>
+                <div style="width: 100%; max-width: 800px; height: 250px; margin-top: 40px; border-radius: 12px; overflow: hidden;">
+                    <img src="Pictures for slides/AI BUILDERS .png" alt="AI Builders community" style="width: 100%; height: 100%; object-fit: cover; border-radius: 12px;">
+                </div>
+                <p style="margin-top: 24px; color: var(--text-muted);">aibuilders.club</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 11: AI Builders Mission -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="10">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    OUR MISSION
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Building real<br>
+                    <span class="highlight">AI optimism</span>
+                </h1>
+                <p class="subtitle" style="margin-bottom: 32px;">Uniting AI builders — big and small — to stay ahead with the latest AI tech and support each other to build better solutions.</p>
+                <div class="mission-tags">
+                    <span class="mission-tag">Healthy living</span>
+                    <span class="mission-tag">Mental Wellbeing</span>
+                    <span class="mission-tag">Fair systems</span>
+                    <span class="mission-tag">Efficient institutions</span>
+                    <span class="mission-tag">Sustainability</span>
+                </div>
+                <p style="margin-top: 48px; font-size: 1.1rem;">That's exactly why we're here today. <strong>Let's build.</strong> 🚀</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 12: CUE - Peter -->
+        <!-- ==================== -->
+        <section class="slide cue-slide" data-slide="11">
+            <div class="grid-bg"></div>
+            <div class="cue-content">
+                <div class="badge cue-badge">
+                    <span class="dot"></span>
+                    NEXT SPEAKER
+                    <span class="dot"></span>
+                </div>
+                <div class="speaker-name">Peter</div>
+                <div class="speaker-role">AI for Impact Collective • 5 min</div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 13: CUE - GreenPT Keynote -->
+        <!-- ==================== -->
+        <section class="slide cue-slide" data-slide="12">
+            <div class="grid-bg"></div>
+            <div class="cue-content">
+                <div class="badge cue-badge">
+                    <span class="dot"></span>
+                    KEYNOTE
+                    <span class="dot"></span>
+                </div>
+                <div class="speaker-name">Cas / Tim</div>
+                <div class="speaker-role">GreenPT • 10 min keynote</div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 14: CUE - GreenPT Workshop -->
+        <!-- ==================== -->
+        <section class="slide cue-slide" data-slide="13">
+            <div class="grid-bg"></div>
+            <div class="cue-content">
+                <div class="badge cue-badge">
+                    <span class="dot"></span>
+                    WORKSHOP
+                    <span class="dot"></span>
+                </div>
+                <div class="speaker-name">Cas / Tim</div>
+                <div class="speaker-role">GreenPT • 5 min workshop</div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 15: CUE - ActivePieces -->
+        <!-- ==================== -->
+        <section class="slide cue-slide" data-slide="14">
+            <div class="grid-bg"></div>
+            <div class="cue-content">
+                <div class="badge cue-badge">
+                    <span class="dot"></span>
+                    WORKSHOP
+                    <span class="dot"></span>
+                </div>
+                <div class="speaker-name">ActivePieces</div>
+                <div class="speaker-role">10 min workshop</div>
+            </div>
+        </section>
+        <!-- ==================== -->
+        <!-- SLIDE 16: Lovable Access -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="16">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    LOVABLE ACCESS
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Get your<br>
+                    <span class="highlight">Pro credits</span>
+                </h1>
+                <div class="code-block">AmsterdamHack</div>
+                <div class="two-col" style="width: 100%; max-width: 900px; gap: 80px; margin-top: 40px;">
+                    <div class="steps-list">
+                        <div class="step-item">
+                            <span class="step-num">1</span>
+                            <span class="step-text">Go to <strong>lovable.dev</strong></span>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">2</span>
+                            <span class="step-text">Create account or log in</span>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">3</span>
+                            <span class="step-text">Go to <strong>Settings → Plans & Credits</strong></span>
+                        </div>
+                    </div>
+                    <div class="steps-list">
+                        <div class="step-item">
+                            <span class="step-num">4</span>
+                            <span class="step-text">Select <strong>Pro Plan 1 (200 credits)</strong> — monthly</span>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">5</span>
+                            <span class="step-text">Enter code: <strong>AmsterdamHack</strong></span>
+                        </div>
+                        <div class="step-item">
+                            <span class="step-num">⚠️</span>
+                            <span class="step-text" style="color: var(--text-muted);">Payment details may be asked. You have 1 month to cancel.</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 17: Ready for Challenges -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="17">
+            <div class="grid-bg"></div>
+            <div class="big-message">
+                <h1 class="hero-title">
+                    Ready for the<br>
+                    <span class="highlight">challenges?</span> 🎯
+                </h1>
+                <p class="subtitle">Let's hear from our challenge partners.</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 18: WorkRight Title -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="19">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    CHALLENGE 1
+                    <span class="dot"></span>
+                </div>
+                <h1 class="hero-title">
+                    WorkRight Navigator
+                </h1>
+                <p class="subtitle">employment rights for vulnerable workers</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 20: WorkRight Problem -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="20">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE PROBLEM
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Discrimination goes unchallenged<br>
+                    <span class="highlight">because the system is inaccessible</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">Every year, thousands are fired and suspect discrimination — disability, race, gender, age, faith. <strong>Most have no lawyer, no understanding of the process</strong></span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">Complex systems: <strong>mandatory conciliation, strict time limits, bureaucratic processes</strong> that assume you already understand them</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">For someone already overwhelmed — shocked by dismissal, living with a disability — <strong>the system becomes inaccessible by design</strong></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 21: WorkRight Challenge -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="21">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE CHALLENGE
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Help vulnerable people<br>
+                    <span class="highlight">navigate their rights</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Clarity</strong> — give users a simple overview of the journey: what steps exist, what each step means, what happens next</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>Accessibility</strong> — understandable for users with cognitive disabilities, low literacy, or high stress. Plain language, visual pathways, voice options</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>Preparation Support</strong> — help users organise the basics: timeline, key events, what documents matter — so they can approach advisors better prepared</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 22: WorkRight Constraints -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="22">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    KEEP IN MIND
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Constraints
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Human-in-the-loop is mandatory</strong> — support, not replace, legal professionals and advice services</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Avoid legal advice</strong> — guide understanding and preparation, not courtroom strategy</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Design for vulnerability</strong> — assume the user is overwhelmed, distrustful, may struggle with memory or reading</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Scope realistically</strong> — a working prototype for one country beats a multi-jurisdiction vision that doesn't run</span>
+                    </div>
+                </div>
+                <p style="margin-top: 48px; color: var(--text-muted);">More details: <strong style="color: var(--text);">fixathon-y6xd.vercel.app</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 22: LUMC Title -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="24">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    CHALLENGE 2
+                    <span class="dot"></span>
+                </div>
+                <h1 class="hero-title">
+                    LUMC
+                </h1>
+                <p class="subtitle">Department of Clinical Epidemiology</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 25: LUMC Problem -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="25">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE PROBLEM
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Researchers are buried in admin<br>
+                    <span class="highlight">Science gets squeezed into leftover time</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">75 people at Clinical Epidemiology working to improve healthcare through research — but <strong>research has a bureaucracy problem</strong></span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">Before studying anything: <strong>cleaning data, reviewing literature, writing protocols</strong>, hunting for that presentation from two years ago</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">Poor data quality compromises studies. <strong>Systematic reviews take months</strong>. Knowledge gets lost in messy folders</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 26: LUMC Challenge -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="26">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE CHALLENGE
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Free researchers from<br>
+                    <span class="highlight">administrative gravity</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Data management</strong> — automate cleaning, validation, and quality checks that currently eat weeks</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>Literature synthesis</strong> — accelerate systematic reviews and evidence gathering</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>Knowledge retrieval</strong> — make years of institutional knowledge findable and usable</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">04</span>
+                        <span class="angle-text"><strong>Workflow automation</strong> — reduce coordination overhead so teams can focus on research</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 27: LUMC Constraints -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="27">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    KEEP IN MIND
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Constraints
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>No patient data</strong> — privacy first, always. Work with synthetic or anonymized data only</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Local deployment</strong> — solutions must run on-premise. No cloud dependencies for sensitive workflows</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Python preferred</strong> — the department works in Python. Integration matters</span>
+                    </div>
+                </div>
+                <p style="margin-top: 48px; color: var(--text-muted);">More details: <strong style="color: var(--text);">fixathon-y6xd.vercel.app</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 20: Hulpwijzer Title -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="20">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    CHALLENGE 3
+                    <span class="dot"></span>
+                </div>
+                <h1 class="hero-title">
+                    Hulpwijzer
+                </h1>
+                <p class="subtitle">in collaboration with Single Super Mom</p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 21: Hulpwijzer Problem -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="20">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE PROBLEM
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Thousands are missing out<br>
+                    <span class="highlight">on support they deserve</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">Single mothers are missing financial support they're entitled to — not because it doesn't exist, but because <strong>finding it is nearly impossible</strong></span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">Financial aid scattered across <strong>hundreds of municipalities</strong>, funds, and schemes</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">→</span>
+                        <span class="angle-text">The <strong>Toeslagenaffaire</strong> broke trust — many now avoid the system entirely</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 22: Hulpwijzer Challenge -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="21">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THE CHALLENGE
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Build AI that helps them<br>
+                    <span class="highlight">find what they deserve</span>
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Aggregation</strong> — bring fragmented information from multiple sources into one place</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>Accessibility</strong> — make it human and approachable for people who distrust bureaucratic systems</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>Automation with oversight</strong> — relieve municipalities while keeping humans in the loop</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 23: Hulpwijzer Constraints -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="22">
+            <div class="grid-bg"></div>
+            <div class="slide-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    KEEP IN MIND
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Constraints
+                </h1>
+                <div class="angles-list">
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Human-in-the-loop is mandatory</strong> — design for verification, not replacement</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Trust is fragile</strong> — assume your user has been burned by "the system" before</span>
+                    </div>
+                    <div class="angle-item">
+                        <span class="angle-num">⚠️</span>
+                        <span class="angle-text"><strong>Scope realistically</strong> — a working prototype that solves one piece well beats a grand vision that doesn't run</span>
+                    </div>
+                </div>
+                <p style="margin-top: 48px; color: var(--text-muted);">More details: <strong style="color: var(--text);">fixathon-y6xd.vercel.app</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 24: Find Your Team -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="23">
+            <div class="grid-bg"></div>
+            <div class="big-message">
+                <h1 class="hero-title">
+                    Find your team
+                </h1>
+                <img src="WhatsApp Image 2025-12-13 at 09.47.39.jpeg" alt="Team formation QR code" style="width: 280px; height: 280px; margin-top: 40px; border-radius: 12px;">
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 26: GO! -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="25">
+            <div class="grid-bg"></div>
+            <div class="big-message">
+                <h1 class="hero-title">
+                    12:00<br>
+                    <span class="highlight">Let's hack!</span> 🚀
+                </h1>
+                <p class="subtitle">Submission deadline: Tomorrow 13:00</p>
+                <p style="margin-top: 24px; font-size: 0.9rem; color: var(--text-muted);">Questions? Find the organizers!</p>
+            </div>
+            <div class="scrolling-text">
+                <div class="scroll-track">
+                    <span>BUILD — SHIP — IMPACT — BUILD — SHIP — IMPACT — </span>
+                    <span>BUILD — SHIP — IMPACT — BUILD — SHIP — IMPACT — </span>
+                    <span>BUILD — SHIP — IMPACT — BUILD — SHIP — IMPACT — </span>
+                    <span>BUILD — SHIP — IMPACT — BUILD — SHIP — IMPACT — </span>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SUNDAY SLIDES -->
+        <!-- ==================== -->
+
+        <!-- ==================== -->
+        <!-- SLIDE 27: Thank You -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="26">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    THAT'S A WRAP
+                    <span class="dot"></span>
+                </div>
+                <h1 class="hero-title">
+                    Thank you! 🙏
+                </h1>
+                <p class="subtitle">To everyone who built, supported, and made this happen</p>
+                <p style="margin-top: 40px; color: var(--text-muted);">
+                    Norrsken • AI for Impact Collective • AI Builders<br>
+                    Vandebron • GreenPT • ActivePieces • Lovable
+                </p>
+                <p style="margin-top: 24px;"><strong>And most importantly: all of you! 💪</strong></p>
+            </div>
+        </section>
+
+        <!-- ==================== -->
+        <!-- SLIDE 28: Join AI Builders -->
+        <!-- ==================== -->
+        <section class="slide" data-slide="27">
+            <div class="grid-bg"></div>
+            <div class="slide-content center-content">
+                <div class="badge">
+                    <span class="dot"></span>
+                    STAY CONNECTED
+                    <span class="dot"></span>
+                </div>
+                <h1 class="slide-title">
+                    Join<br>
+                    <span class="highlight">AI Builders</span>
+                </h1>
+                <div class="qr-placeholder">
+                    [QR CODE]<br>aib.club/wa
+                </div>
+                <p style="color: var(--text-muted);">WhatsApp: <strong style="color: var(--text);">aib.club/wa</strong></p>
+                <p style="color: var(--text-muted); margin-top: 8px;">Website: <strong style="color: var(--text);">aibuilders.club</strong></p>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- Keyboard Hint -->
+    <div class="keyboard-hint">
+        ← → or click to navigate
+    </div>
+
+    <script>
+        // Slide Navigation
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        let currentSlide = 1;
+
+        document.getElementById('totalSlides').textContent = totalSlides;
+
+        function showSlide(n) {
+            if (n < 1) n = 1;
+            if (n > totalSlides) n = totalSlides;
+            
+            slides.forEach(slide => slide.classList.remove('active'));
+            slides[n - 1].classList.add('active');
+            currentSlide = n;
+            document.getElementById('currentSlide').textContent = currentSlide;
+        }
+
+        function nextSlide() {
+            showSlide(currentSlide + 1);
+        }
+
+        function prevSlide() {
+            showSlide(currentSlide - 1);
+        }
+
+        // Button controls
+        document.getElementById('nextBtn').addEventListener('click', nextSlide);
+        document.getElementById('prevBtn').addEventListener('click', prevSlide);
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                e.preventDefault();
+                nextSlide();
+            } else if (e.key === 'ArrowLeft') {
+                e.preventDefault();
+                prevSlide();
+            } else if (e.key === 'Home') {
+                showSlide(1);
+            } else if (e.key === 'End') {
+                showSlide(totalSlides);
+            }
+        });
+
+        // Click to advance (on slide content)
+        document.querySelector('.slides-container').addEventListener('click', (e) => {
+            if (!e.target.closest('.nav-btn')) {
+                nextSlide();
+            }
+        });
+
+        // Touch swipe support
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', (e) => {
+            touchStartX = e.changedTouches[0].screenX;
+        });
+
+        document.addEventListener('touchend', (e) => {
+            touchEndX = e.changedTouches[0].screenX;
+            if (touchStartX - touchEndX > 50) {
+                nextSlide();
+            } else if (touchEndX - touchStartX > 50) {
+                prevSlide();
+            }
+        });
+    </script>
+</body>
+</html>

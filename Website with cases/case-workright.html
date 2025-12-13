@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WorkRight Navigator — Fixathon x Norrsken</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span>&lt;</span> Fixathon <span>&gt;</span></a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav" id="nav">
+            <a href="case-hulpwijzer.html">Hulpwijzer</a>
+            <a href="case-lumc.html">LUMC</a>
+            <a href="case-workright.html" class="active">WorkRight</a>
+        </nav>
+    </header>
+
+    <main class="case-page">
+        <a href="index.html" class="back-link"><span>←</span> All cases</a>
+        
+        <div class="case-header">
+            <div class="case-number">Case 03</div>
+            <h1 class="case-partner">WorkRight Navigator</h1>
+            <div class="case-collab">employment rights for vulnerable workers</div>
+        </div>
+
+        <div class="case-content">
+            <h2>The Problem</h2>
+            <div class="case-section">
+                <p class="problem-text">Every year, thousands of people are fired and suspect discrimination — because of disability, race, gender, age, faith, or other protected characteristics. Most have no lawyer, no understanding of the process, and in many cases limited literacy or cognitive capacity.</p>
+                <p>Every country has employment protection laws. And in every country, the system is complex: mandatory conciliation steps, strict time limits, structured documentation requirements, and bureaucratic processes that assume you already understand them.</p>
+                <p>For someone already overwhelmed — shocked by dismissal, living with a disability, or struggling with forms — the system becomes inaccessible by design.</p>
+                <p>As a result, countless valid claims are never made, and discrimination goes unchallenged.</p>
+            </div>
+
+            <h2>The Challenge</h2>
+            <div class="case-section">
+                <p>Build an AI-powered tool that helps vulnerable individuals understand and navigate their rights after being fired. Pick a jurisdiction you know (UK, Netherlands, Germany, etc.) and make it work for that system.</p>
+                
+                <div class="angles">
+                    <div class="angle">
+                        <span class="angle-num">01</span>
+                        <span class="angle-text"><strong>Clarity</strong> — give users a simple overview of the journey: what steps exist, what each step means, and what happens next</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">02</span>
+                        <span class="angle-text"><strong>Accessibility</strong> — make the experience understandable for users with cognitive disabilities, low literacy, or high stress. Plain language, visual pathways, voice options, and adaptive support modes</span>
+                    </div>
+                    <div class="angle">
+                        <span class="angle-num">03</span>
+                        <span class="angle-text"><strong>Preparation Support</strong> — help users organise the basics: timeline, key events, what to tell the conciliation body, and what documents matter — so they can approach advisors better prepared</span>
+                    </div>
+                </div>
+            </div>
+
+            <h2>Constraints</h2>
+            <div class="case-section">
+                <div class="constraints">
+                    <div class="constraint"><strong>Human-in-the-loop is mandatory.</strong> This tool must support — not replace — legal professionals, conciliation staff, or advice services.</div>
+                    <div class="constraint"><strong>Avoid legal advice.</strong> The system guides understanding and preparation, not courtroom strategy.</div>
+                    <div class="constraint"><strong>Design for vulnerability.</strong> Assume the user is overwhelmed, distrustful of institutions, and may struggle with memory, reading, or decision-making.</div>
+                    <div class="constraint"><strong>Scope realistically.</strong> A simple prototype that clearly explains "What happens after you're fired?" for one country is more valuable than a multi-jurisdiction system that doesn't work.</div>
+                </div>
+            </div>
+
+            <h2>Example: UK System</h2>
+            <div class="case-section">
+                <p>To give you a concrete reference, here's how the UK system works:</p>
+                <div class="constraints">
+                    <div class="constraint"><strong>ACAS Early Conciliation</strong> — before going to tribunal, you must contact ACAS (Advisory, Conciliation and Arbitration Service) to attempt resolution</div>
+                    <div class="constraint"><strong>Strict time limits</strong> — typically 3 months minus 1 day from the discriminatory act to file</div>
+                    <div class="constraint"><strong>Protected characteristics</strong> — disability, race, gender, age, religion, sexual orientation, pregnancy, marriage status</div>
+                    <div class="constraint"><strong>Employment Tribunal</strong> — if conciliation fails, cases go to tribunal where you present evidence</div>
+                </div>
+                <p style="margin-top: 24px; color: var(--text-muted);">Similar bodies exist elsewhere: College voor de Rechten van de Mens (NL), Antidiskriminierungsstelle (DE), Défenseur des droits (FR), etc.</p>
+            </div>
+
+            <h2>Potential Use Cases</h2>
+            <div class="case-section">
+                <div class="use-cases">
+                    <div class="use-case">
+                        <div class="use-case-title">Rights Explorer</div>
+                        <div class="use-case-desc">A guided walkthrough that helps users understand if what happened to them might be discrimination, using plain language and real examples</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Timeline Builder</div>
+                        <div class="use-case-desc">Help users reconstruct and document what happened, when, and who was involved — in a format advisors can use</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Process Guide</div>
+                        <div class="use-case-desc">Explain what conciliation means in your jurisdiction, what to expect, and help users prepare what they want to say</div>
+                    </div>
+                    <div class="use-case">
+                        <div class="use-case-title">Deadline Tracker</div>
+                        <div class="use-case-desc">Show the critical time limits for your jurisdiction and send reminders before they expire</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="case-nav">
+            <a href="case-lumc.html" class="case-nav-link prev">
+                <span class="case-nav-label">Previous case</span>
+                <span class="case-nav-title">← LUMC</span>
+            </a>
+            <div></div>
+        </nav>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-text">Fixathon — In partnership with Norrsken</div>
+        <div class="footer-logo">&lt; Fixathon &gt;</div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+    </script>
+</body>
+</html>
+

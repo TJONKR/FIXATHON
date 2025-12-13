@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixathon x Norrsken — Hackathon Cases</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <a href="index.html" class="logo"><span>&lt;</span> Fixathon <span>&gt;</span></a>
+        <button class="mobile-menu-btn" onclick="toggleMenu()">☰</button>
+        <nav class="nav" id="nav">
+            <a href="case-hulpwijzer.html">Hulpwijzer</a>
+            <a href="case-lumc.html">LUMC</a>
+            <a href="case-workright.html">WorkRight</a>
+            <a href="presentation.html" class="nav-presentation">Presentation</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="video-background">
+            <video autoplay muted loop playsinline>
+                <source src="https://cdn.prod.website-files.com/65e76a14af207274f46c7f0e%2F66686cc7b07e8ad18a0ca349_UPDATED_BACKGROUND-transcode.mp4" type="video/mp4">
+            </video>
+            <div class="video-overlay"></div>
+        </div>
+        <div class="hero-content">
+            <div class="hero-label">Hackathon Cases — Two Days</div>
+            <h1>Three challenges.<br>Real problems.<br>Build something that matters.</h1>
+            <p>In partnership with Norrsken, we're bringing impact-driven challenges to builders who ship. No slideware. No pitches. Working prototypes that solve real problems for real people.</p>
+        </div>
+    </section>
+
+    <section class="cases-grid">
+        <a href="case-hulpwijzer.html" class="case-card">
+            <div class="case-card-number">Case 01</div>
+            <div class="case-card-title">Hulpwijzer</div>
+            <div class="case-card-collab">in collaboration with Single Super Mom</div>
+            <div class="case-card-desc">Thousands of single mothers are missing out on financial support they're entitled to — not because it doesn't exist, but because finding it is nearly impossible.</div>
+            <div class="case-card-arrow">View case <span>→</span></div>
+        </a>
+
+        <a href="case-lumc.html" class="case-card">
+            <div class="case-card-number">Case 02</div>
+            <div class="case-card-title">LUMC</div>
+            <div class="case-card-collab">Department of Clinical Epidemiology</div>
+            <div class="case-card-desc">Researchers are buried in admin. The actual science gets squeezed into whatever time is left. Free them from administrative gravity.</div>
+            <div class="case-card-arrow">View case <span>→</span></div>
+        </a>
+
+        <a href="case-workright.html" class="case-card">
+            <div class="case-card-number">Case 03</div>
+            <div class="case-card-title">WorkRight Navigator</div>
+            <div class="case-card-collab">Employment Rights for Vulnerable Workers</div>
+            <div class="case-card-desc">Every year, thousands are fired and suspect discrimination. Most have no lawyer, no understanding of the process, and the system is inaccessible by design.</div>
+            <div class="case-card-arrow">View case <span>→</span></div>
+        </a>
+    </section>
+
+    <footer class="footer">
+        <div class="footer-text">Fixathon — In partnership with Norrsken</div>
+        <div class="footer-logo">&lt; Fixathon &gt;</div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('nav').classList.toggle('active');
+        }
+
+        // Add scrolled class to header when scrolling
+        const header = document.querySelector('.header');
+        const hero = document.querySelector('.hero');
+        
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 100) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+        });
+    </script>
+</body>
+</html>
+
